@@ -1,0 +1,3 @@
+[submodule "vendor/glossary-app"]
+	path = vendor/glossary-app
+	url = https://github.com/developer-hhiotsystems/terminology-extraction.git
