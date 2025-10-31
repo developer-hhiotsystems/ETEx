@@ -253,6 +253,9 @@ scripts/dev/github/
 | **Design** | Create feature specifications | Complex features (>1 week) | [.agents/design/CLAUDE.md](.agents/design/CLAUDE.md) |
 | **Coding** | Implement features per spec | Multi-component features | [.agents/coding/CLAUDE.md](.agents/coding/CLAUDE.md) |
 | **Testing** | Run tests, report failures | Before PR, recommended | [.agents/testing/CLAUDE.md](.agents/testing/CLAUDE.md) |
+| **Backend Expert** | Python/FastAPI/SQLAlchemy best practices | Backend features, DB migrations | [.agents/backend-expert/CLAUDE.md](.agents/backend-expert/CLAUDE.md) |
+| **Frontend Expert** | React/TypeScript/MUI architecture | Complex UI components, state management | [.agents/frontend-expert/CLAUDE.md](.agents/frontend-expert/CLAUDE.md) |
+| **Project Manager** | Sprint planning, milestone tracking | Weekly reviews, sprint planning | [.agents/project-manager/CLAUDE.md](.agents/project-manager/CLAUDE.md) |
 
 ### Folder Structure
 
@@ -269,8 +272,14 @@ scripts/dev/github/
 │   └── CLAUDE.md                # Design Agent instructions
 ├── coding/
 │   └── CLAUDE.md                # Coding Agent instructions
-└── testing/
-    └── CLAUDE.md                # Testing Agent instructions
+├── testing/
+│   └── CLAUDE.md                # Testing Agent instructions
+├── backend-expert/
+│   └── CLAUDE.md                # Backend Expert instructions
+├── frontend-expert/
+│   └── CLAUDE.md                # Frontend Expert instructions
+└── project-manager/
+    └── CLAUDE.md                # Project Manager instructions
 ```
 
 ### How to Activate Agents

@@ -20,6 +20,9 @@ ETEx uses **permanent agents** - specialized Claude Code instances with specific
 | **[Design](design/)** | Create feature specifications | Before implementing new features | ✅ Yes - for complex features |
 | **[Coding](coding/)** | Implement features per spec | Feature implementation | No - main agent can code |
 | **[Testing](testing/)** | Run tests, report failures | Before PR, after implementation | ⚠️ Recommended |
+| **[Backend Expert](backend-expert/)** | Python/FastAPI/SQLAlchemy best practices | Backend features, DB migrations | ✅ Yes - for backend work |
+| **[Frontend Expert](frontend-expert/)** | React/TypeScript/MUI architecture | Complex UI, state management | ✅ Yes - for frontend work |
+| **[Project Manager](project-manager/)** | Sprint planning, milestone tracking | Weekly reviews, sprint planning | ✅ Yes - for sprint management |
 
 ---
 
