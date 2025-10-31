@@ -153,14 +153,15 @@ build/
 # ============================================
 
 # Agent temporary working files (NOT committed)
-.agent/workspace/
-.agent/memory/
+.agents/workspace/
+.agents/memory/
 
 # Keep agent outputs for review (COMMITTED)
-!.agent/outputs/
+!.agents/outputs/
 
 # Keep agent documentation (COMMITTED)
-!.agent/README.md
+!.agents/README.md
+!.agents/*/CLAUDE.md
 
 # ============================================
 # ETEx Specific - Data & Database
@@ -324,6 +325,24 @@ service-account.json
 
 # SSL certificates
 ssl/
+
+# ============================================
+# Claude Code / MCP Server Configuration
+# ============================================
+
+# MCP settings with API keys (DO NOT COMMIT)
+.claude/settings.local.json
+.claude/settings.json
+
+# Keep template (COMMITTED)
+!.claude/settings.template.json
+
+# MCP server local installations
+.claude/mcp-servers/
+
+# Claude Code session data
+.claude/sessions/
+.claude/cache/
 
 # ============================================
 # Dependencies (Vendor)

@@ -1303,6 +1303,102 @@ pytest tests/ --cov
 
 ---
 
+## MCP Server Integration
+
+**Model Context Protocol (MCP) servers extend Claude Code's capabilities with specialized tools.**
+
+### Essential MCP Servers for ETEx
+
+**Priority 1 - Install Before Week 1**:
+
+1. **GitHub MCP** ⭐ CRITICAL
+   - Manage issues, PRs, milestones without leaving Claude Code
+   - Essential for Issue Manager and Project Manager agents
+   - Installation: `claude mcp add --transport http github https://api.githubcopilot.com/mcp/`
+   - Requires: GitHub Personal Access Token (scopes: repo, workflow)
+
+2. **Sequential Thinking MCP** ⭐ CRITICAL
+   - Enables structured problem-solving for complex tasks
+   - Critical for Design Agent (architecture decisions)
+   - Installation: `claude mcp add sequential-thinking npx -- -y @modelcontextprotocol/server-sequential-thinking`
+   - Usage: Add "use sequential thinking" to prompts
+
+3. **Knowledge Graph Memory MCP** ⭐ CRITICAL
+   - Retains ETEx context across sessions
+   - Remembers agent roles, code reuse decisions, project structure
+   - Prevents repetitive explanations
+   - Installation: See [docs/reference/mcp-server-integration.md](docs/reference/mcp-server-integration.md)
+
+**Priority 2 - Install Week 1-2**:
+
+4. **Context7 MCP** (Latest library documentation)
+   - Current FastAPI, SQLAlchemy 2.0, React 18, MUI docs
+   - Usage: Add "use context7" to prompts
+   - Free tier: 100 requests/day
+
+5. **DuckDuckGo MCP** (Web search for solutions)
+   - Search for error solutions, examples, current docs
+   - No API key required
+   - Good for Backend/Frontend Expert agents
+
+**Priority 3 - Optional**:
+
+6. **Playwright MCP** (E2E testing) - Week 5-6
+7. **Apidog MCP** (API spec validation) - Week 3+
+8. **MCP Compass** (Discover new MCP servers)
+
+### Usage Patterns by Agent
+
+**Issue Manager**:
+```
+"Create Week 2 issue for PDF upload with labels type:feature,priority:high"
+```
+
+**Design Agent**:
+```
+"Use sequential thinking to design database schema"
+```
+
+**Backend Expert**:
+```
+"Show latest SQLAlchemy 2.0 async patterns using context7"
+```
+
+**Frontend Expert**:
+```
+"Generate React component with MUI v5 using context7"
+```
+
+**Project Manager**:
+```
+"Analyze Week 3 velocity using GitHub data"
+```
+
+**Complete Setup Guide**: See [docs/reference/mcp-server-integration.md](docs/reference/mcp-server-integration.md) for detailed installation instructions, configuration, and troubleshooting.
+
+### Verification
+
+After installing MCPs:
+```bash
+# List installed MCPs
+claude mcp list
+
+# Test GitHub MCP
+claude mcp test github "List open issues"
+
+# Test Sequential Thinking
+claude mcp test sequential-thinking "Break down: Design database schema"
+```
+
+### Security
+
+- ✅ Store API keys in `.claude/settings.local.json` (gitignored)
+- ❌ Never commit API keys to repository
+- ✅ Use environment variables for CI/CD
+- ✅ Rotate GitHub PATs every 90 days
+
+---
+
 ## Questions & Answers
 
 **Q: Can I work without git submodules for vendor/?**

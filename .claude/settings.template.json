@@ -1,0 +1,79 @@
+{
+  "$schema": "https://raw.githubusercontent.com/anthropics/claude-code/main/schema/settings.schema.json",
+  "mcpServers": {
+    "github": {
+      "transport": {
+        "type": "http",
+        "url": "https://api.githubcopilot.com/mcp/"
+      },
+      "headers": {
+        "Authorization": "Bearer YOUR_GITHUB_PERSONAL_ACCESS_TOKEN"
+      },
+      "description": "GitHub integration for issue/PR management (CRITICAL for ETEx)"
+    },
+    "sequential-thinking": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-sequential-thinking"],
+      "description": "Structured problem-solving for complex tasks (CRITICAL for Design Agent)"
+    },
+    "knowledge-graph": {
+      "command": "node",
+      "args": ["PATH_TO_MEMORY_SERVER/build/index.js"],
+      "env": {
+        "MEMORY_PATH": "c:/Users/developer/Documents/Coding Projects/ETEx/.agents/memory/"
+      },
+      "description": "Persistent context across sessions (CRITICAL for project memory)"
+    },
+    "context7": {
+      "transport": {
+        "type": "http",
+        "url": "https://mcp.context7.com/mcp"
+      },
+      "headers": {
+        "Authorization": "Bearer YOUR_CONTEXT7_API_KEY"
+      },
+      "description": "Latest library documentation for FastAPI, React, SQLAlchemy (HIGH PRIORITY)"
+    },
+    "duckduckgo": {
+      "command": "node",
+      "args": ["PATH_TO_SERVERS/src/duckduckgo/index.js"],
+      "description": "Web search for error solutions and examples (HIGH PRIORITY)"
+    },
+    "playwright": {
+      "command": "npx",
+      "args": ["@playwright/mcp@latest"],
+      "description": "E2E testing automation (Week 5-6)"
+    },
+    "apidog": {
+      "command": "npx",
+      "args": ["-y", "apidog-mcp-server@latest", "--oas=http://localhost:8000/openapi.json"],
+      "description": "API spec validation and client generation (Week 3+)"
+    }
+  },
+  "toolRules": {
+    "Bash(cd:*)": "allow",
+    "Bash(tree:*)": "allow",
+    "Bash(ls:*)": "allow",
+    "Bash(find:*)": "allow",
+    "Bash(git status:*)": "allow",
+    "Bash(git diff:*)": "allow",
+    "Bash(git log:*)": "allow",
+    "Bash(git add:*)": "allow",
+    "Bash(git commit:*)": "allow",
+    "Bash(git push:*)": "allow",
+    "Bash(pytest:*)": "allow",
+    "Bash(npm test:*)": "allow",
+    "Read(**/docs/**)": "allow",
+    "Read(**/.agents/**)": "allow",
+    "Read(**/src/**)": "allow",
+    "Read(**/tests/**)": "allow",
+    "Bash(rm:*)": "ask",
+    "Bash(curl:*)": "ask",
+    "Bash(python:*)": "ask",
+    "Bash(node:*)": "ask",
+    "Write(**/node_modules/**)": "deny",
+    "Write(**/.git/**)": "deny",
+    "Edit(**/node_modules/**)": "deny"
+  },
+  "customInstructions": "Follow CLAUDE.md guidelines strictly. Use MCP servers when appropriate: GitHub for issues, Sequential Thinking for complex design, Context7 for latest library docs. All agents must coordinate through Issue Manager and follow 6-week MVP timeline."
+}
