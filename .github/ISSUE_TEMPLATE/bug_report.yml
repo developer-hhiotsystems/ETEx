@@ -1,0 +1,121 @@
+name: Bug Report
+description: Report a bug or issue in ETEx
+title: "bug(<component>): <brief description>"
+labels: ["type: bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting a bug! Please provide details below to help us fix it.
+
+  - type: dropdown
+    id: component
+    attributes:
+      label: Component
+      description: Where did the bug occur?
+      options:
+        - Backend (Python/FastAPI)
+        - Frontend (React/TypeScript)
+        - Database (SQLAlchemy/SQLite)
+        - Extraction (PDF/Term extraction)
+        - API Integration (IATE/IEC/NAMUR)
+        - Documentation
+        - Other
+    validations:
+      required: true
+
+  - type: dropdown
+    id: impact
+    attributes:
+      label: Impact
+      description: How severe is this bug?
+      options:
+        - 🔴 Critical (blocks MVP, crashes, data loss)
+        - 🟠 High (affects core functionality)
+        - 🟡 Medium (workaround available)
+        - 🟢 Low (edge case, cosmetic issue)
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Bug Description
+      description: What went wrong?
+      placeholder: |
+        Example: PDF extraction fails when processing scanned NAMUR documents with multi-column layouts.
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps to Reproduce
+      description: How can we reproduce this bug?
+      placeholder: |
+        1. Upload NAMUR-NE107-scanned.pdf
+        2. Click "Extract Terms" button
+        3. Observe error in console
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected Behavior
+      description: What should have happened?
+      placeholder: |
+        Should extract terms from both columns, or show error message: "Scanned PDFs not supported yet."
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual Behavior
+      description: What actually happened?
+      placeholder: |
+        Crashes with IndexError: list index out of range
+    validations:
+      required: true
+
+  - type: textarea
+    id: error
+    attributes:
+      label: Error Log / Stack Trace
+      description: Copy/paste any error messages or stack traces
+      render: shell
+      placeholder: |
+        [2025-10-31 14:32:15] ERROR: PDF extraction failed
+        Traceback (most recent call last):
+          File "src/backend/services/extraction/pdf_processor.py", line 45
+          ...
+        IndexError: list index out of range
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: What environment are you using?
+      placeholder: |
+        - Python version: 3.12.0
+        - OS: Windows 11
+        - Browser (if frontend): Chrome 118
+        - ETEx version: 0.1.0
+    validations:
+      required: true
+
+  - type: textarea
+    id: fix
+    attributes:
+      label: Proposed Fix (Optional)
+      description: If you have ideas on how to fix this, share them!
+      placeholder: |
+        Add is_scanned_pdf() check before extraction and return friendly error message.
+
+  - type: input
+    id: blocks
+    attributes:
+      label: What Does This Block?
+      description: Which milestone or issue does this block?
+      placeholder: "Blocks Week 2 milestone (#18)"

@@ -1,0 +1,90 @@
+name: Documentation
+description: Request or improve documentation
+title: "docs(<area>): <brief description>"
+labels: ["type: docs"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for improving our documentation! Details below help us understand what's needed.
+
+  - type: dropdown
+    id: location
+    attributes:
+      label: Documentation Location
+      description: Where should this documentation live?
+      options:
+        - GitHub Wiki (user-facing guides)
+        - docs/ in repo (technical specs, architecture)
+        - Code comments (inline documentation)
+        - API Reference (endpoint documentation)
+        - README.md (project overview)
+        - Other
+    validations:
+      required: true
+
+  - type: dropdown
+    id: audience
+    attributes:
+      label: Target Audience
+      description: Who is this documentation for?
+      options:
+        - End users (how to use ETEx)
+        - Frontend developers (integrating with API)
+        - Backend developers (architecture, code)
+        - Contributors (how to contribute)
+        - Administrators (setup, deployment)
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: what
+    attributes:
+      label: What Needs Documentation?
+      description: What topic, feature, or API needs to be documented?
+      placeholder: |
+        Example: API endpoint /api/sources - CRUD operations for authoritative sources
+    validations:
+      required: true
+
+  - type: textarea
+    id: content
+    attributes:
+      label: Required Content
+      description: What should be included in the documentation?
+      placeholder: |
+        - Endpoint URLs (GET, POST, PUT, DELETE)
+        - Request/response examples (JSON)
+        - Status codes (200, 400, 404, 500)
+        - Authentication requirements
+        - Error handling
+    validations:
+      required: true
+
+  - type: input
+    id: related_code
+    attributes:
+      label: Related Code (Optional)
+      description: Link to code that this documents
+      placeholder: "src/backend/api/sources.py:15-87"
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority
+      description: How urgent is this documentation?
+      options:
+        - High (blocks usage or development)
+        - Medium (improves clarity)
+        - Low (nice to have)
+    validations:
+      required: true
+
+  - type: textarea
+    id: existing
+    attributes:
+      label: Existing Documentation (If updating)
+      description: If updating existing docs, what's wrong or missing?
+      placeholder: |
+        Current API docs are outdated - missing new filters parameter added in #45.

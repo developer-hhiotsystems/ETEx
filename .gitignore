@@ -355,8 +355,8 @@ test-reports/
 junit.xml
 coverage/
 
-# CI/CD artifacts
-.github/
+# CI/CD artifacts (keep .github/ - it contains templates and workflows)
+# .github/ should be COMMITTED (issue templates, workflows, etc.)
 .gitlab-ci.yml
 .travis.yml
 

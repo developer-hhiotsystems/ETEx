@@ -1,0 +1,11 @@
+blank_issues_enabled: true
+contact_links:
+  - name: 📖 Documentation
+    url: https://github.com/developer-hhiotsystems/ETEx/wiki
+    about: Check the Wiki for user guides, API reference, and FAQ
+  - name: 💬 Discussions
+    url: https://github.com/developer-hhiotsystems/ETEx/discussions
+    about: Ask questions, share ideas, or discuss features
+  - name: 📋 Requirements Document
+    url: https://github.com/developer-hhiotsystems/ETEx/blob/main/docs/REQUIREMENTS.md
+    about: Complete project requirements and MVP scope

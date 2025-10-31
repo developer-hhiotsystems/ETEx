@@ -1,0 +1,125 @@
+name: Feature Request
+description: Propose a new feature for ETEx
+title: "feat(<component>): <brief description>"
+labels: ["type: feature"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for proposing a new feature! Please fill out the sections below.
+
+  - type: dropdown
+    id: component
+    attributes:
+      label: Component
+      description: Which part of ETEx does this affect?
+      options:
+        - Backend (Python/FastAPI)
+        - Frontend (React/TypeScript)
+        - Database (SQLAlchemy/SQLite)
+        - Extraction (PDF/Term extraction)
+        - API Integration (IATE/IEC/NAMUR)
+        - Documentation
+        - Other
+    validations:
+      required: true
+
+  - type: dropdown
+    id: phase
+    attributes:
+      label: Phase
+      description: When should this be implemented?
+      options:
+        - MVP (6 weeks)
+        - Phase 2A (Internal docs)
+        - Phase 2B (Deviation checking)
+        - Phase 2C (DeepL integration)
+        - Phase 2D (Additional languages)
+        - Phase 2E (Synonym auto-detection)
+        - Phase 2F (User accounts)
+        - Future (nice to have)
+    validations:
+      required: true
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority
+      description: How important is this?
+      options:
+        - Critical (blocks MVP, security issue)
+        - High (important for current week)
+        - Medium (normal priority)
+        - Low (nice to have)
+    validations:
+      required: true
+
+  - type: textarea
+    id: overview
+    attributes:
+      label: Feature Overview
+      description: Brief description of what this feature does and why it's needed
+      placeholder: |
+        Example: Implement PDF upload endpoint that allows users to upload NAMUR standard documents for term extraction.
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance Criteria
+      description: What must be true for this feature to be considered complete?
+      placeholder: |
+        - [ ] User can upload PDF via drag-drop or file picker
+        - [ ] System validates file type (only .pdf accepted)
+        - [ ] Upload progress shown with percentage
+        - [ ] Success/error message displayed
+    validations:
+      required: true
+
+  - type: input
+    id: spec
+    attributes:
+      label: Related Specification
+      description: Link to docs/architecture/ spec file (if exists)
+      placeholder: "docs/architecture/feature-002-pdf-upload-spec.md"
+
+  - type: textarea
+    id: implementation
+    attributes:
+      label: Implementation Notes
+      description: Technical details, reusable components, constraints
+      placeholder: |
+        - Reuse pdf_extractor.py from Glossary APP (Tier 1 import)
+        - Max file size: 50MB
+        - Store in data/uploads/ with timestamp prefix
+        - Use FastAPI File upload with streaming
+
+  - type: input
+    id: week
+    attributes:
+      label: Week / Sprint
+      description: Which week of MVP? (e.g., "Week 2" or "Phase 2A")
+      placeholder: "Week 2"
+
+  - type: textarea
+    id: dependencies
+    attributes:
+      label: Dependencies
+      description: What must be done first? What does this block?
+      placeholder: |
+        Depends on: #5 (database schema)
+        Blocks: #12 (term extraction)
+
+  - type: dropdown
+    id: effort
+    attributes:
+      label: Estimated Effort
+      description: How long will this take?
+      options:
+        - 🔹 Small (< 4 hours)
+        - 🔸 Medium (4-8 hours)
+        - 🔶 Large (1-2 days)
+        - 🔺 Extra Large (> 2 days)
+    validations:
+      required: true
