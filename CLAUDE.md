@@ -69,8 +69,153 @@ git commit -m "feat(extraction): Implement PDF extraction for NAMUR standards
 - **ADRs**: `docs/adr/` - Important decisions (immutable once accepted)
 - **Reference guides**: `docs/reference/` - How to reuse Glossary APP components
 - **Setup guides**: `docs/getting-started/` - Installation, troubleshooting
-- **Agent workspace**: `.agent/workspace/` - Temporary working files (gitignored)
-- **Agent outputs**: `.agent/outputs/` - Completed artifacts for review (committed)
+- **Agent workspace**: `.agents/workspace/` - Temporary working files (gitignored)
+- **Agent outputs**: `.agents/outputs/` - Completed artifacts for review (committed)
+
+### Check Before Creating Folders/Files - MANDATORY
+
+**Before creating ANY new folder or file structure, you MUST check for existing similar structures.**
+
+**Procedure**:
+
+1. **Search for existing patterns**:
+   ```bash
+   # Check for similar folder names
+   ls -la | grep "<keyword>"
+
+   # Find similar folders (up to 2 levels deep)
+   find . -type d -name "*<keyword>*" -maxdepth 2
+
+   # Example: Before creating .agents/, check for .agent*
+   ls -la | grep "\.agent"
+   ```
+
+2. **Decision tree**:
+
+   **If similar structure found**:
+   - Analyze existing content (`ls -R <folder>`)
+   - Determine if duplicate or legitimate separate structure
+   - **If duplicate**: Consolidate into existing folder, do NOT create new one
+   - **If ambiguous**: Ask user which to keep
+
+   **If no similar structure found**:
+   - Proceed with creation
+   - Document in commit message why new structure was needed
+
+   **If potential typo** (e.g., `.agent` vs `.agents`, `doc` vs `docs`):
+   - ALWAYS ask user for clarification before creating
+
+3. **Examples**:
+
+   **Example 1 - Duplicate Prevention**:
+   ```bash
+   # Agent wants to create .agents/ folder
+   ls -la | grep "\.agent"
+   # Output: drwxr-xr-x .agent/
+
+   # STOP - Similar folder exists!
+   ls -R .agent/
+   # Output: README.md, workspace/, outputs/
+
+   # Analysis: .agent/ and .agents/ would be duplicates
+   # Decision: Use existing .agent/ OR consolidate into .agents/
+   # Action: Ask user OR analyze and consolidate
+   ```
+
+   **Example 2 - Legitimate New Folder**:
+   ```bash
+   # Agent wants to create scripts/data/ folder
+   ls scripts/
+   # Output: app/, dev/, docs/
+
+   # No "data" or similar found
+   # Decision: Legitimate new category
+   # Action: Create scripts/data/ and document purpose
+   ```
+
+   **Example 3 - Ambiguous Case**:
+   ```bash
+   # Agent wants to create docs/api/
+   ls -R docs/
+   # Output: docs/architecture/, docs/reference/, docs/adr/
+
+   # Question: Should API docs go in architecture/ or separate api/?
+   # Decision: ASK USER
+   ```
+
+**Enforcement**:
+- ❌ **Violation**: Creating duplicate folders without checking
+- ⚠️ **Severity**: CRITICAL - requires immediate fix
+- ✅ **Correction**: Delete duplicate, consolidate content, update all references
+
+**Why This Rule Exists**:
+- Prevents confusion (.agent vs .agents, doc vs docs)
+- Maintains clean project structure
+- Prevents broken references in documentation
+- Industry best practice
+
+### Scripts Organization - MANDATORY RULES
+
+**CRITICAL REQUIREMENT**: Every PowerShell/Bash script MUST have its own subfolder with its own README.md
+
+**Correct Structure**:
+```
+scripts/dev/github/
+├── README.md                          # Category overview only
+├── create-labels/
+│   ├── create-labels.ps1             # The script
+│   └── README.md                      # Script-specific guide
+└── create-milestones/
+    ├── create-milestones.ps1
+    └── README.md
+```
+
+**WRONG Structure** (DO NOT DO THIS):
+```
+scripts/dev/github/
+├── README.md
+├── create-labels.ps1          ❌ NO! Must be in subfolder
+├── create-milestones.ps1      ❌ NO! Must be in subfolder
+└── helper-script.ps1          ❌ NO! Must be in subfolder
+```
+
+**Rules for Script Management**:
+
+1. ✅ **Creating new script**:
+   - Create subfolder: `scripts/<category>/<script-name>/`
+   - Add script file: `<script-name>.ps1` or `<script-name>.sh`
+   - Add README.md with purpose, usage, examples, troubleshooting
+   - Update category README.md to list new script
+
+2. ✅ **Updating existing script**:
+   - Update the script file in its subfolder
+   - Update its README.md with any usage changes
+   - Update version/date in script header
+
+3. ✅ **Script with new purpose (similar to existing)**:
+   - Delete old script entirely (subfolder + README)
+   - Create new subfolder with enhanced script
+   - Document what changed in new README
+
+4. ✅ **Script with new purpose (different from existing)**:
+   - Keep old script if still useful
+   - Create new subfolder for new script
+   - Each script remains independent
+
+5. ❌ **NEVER put multiple .ps1/.sh files directly in category folder**
+   - Each script needs isolation for clarity
+   - Users should find one folder = one script = one purpose
+
+**Exception**: Application scripts (`scripts/app/`) MAY be less strict about subfolders for very simple runtime scripts (discuss with user first).
+
+**Why This Rule Exists**:
+- Clear organization: One folder = one purpose
+- Easy discovery: README explains each script
+- Version control: Clear history per script
+- Reusability: Users can copy entire script folder with docs
+- Professional: Industry standard for script repositories
+
+**See**: [docs/reference/scripts-organization.md](docs/reference/scripts-organization.md) for complete guide
 
 ---
 
@@ -89,13 +234,108 @@ git commit -m "feat(extraction): Implement PDF extraction for NAMUR standards
    - Reviewing code, running tests, security audits → **Review Role**
 
 3. **Working directory context**:
-   - Working in `.agent/workspace/design/` → **Design Role**
-   - Working in `.agent/workspace/coding/` → **Coding Role**
-   - Working in `.agent/workspace/review/` → **Review Role**
+   - Working in `.agents/workspace/design/` → **Design Role**
+   - Working in `.agents/workspace/coding/` → **Coding Role**
+   - Working in `.agents/workspace/review/` → **Review Role**
+
+---
+
+## Permanent Agent System
+
+**ETEx uses specialized permanent agents for consistent workflows.**
+
+### Agent Overview
+
+| Agent | Purpose | When Mandatory | CLAUDE.md Location |
+|-------|---------|----------------|-------------------|
+| **Issue Manager** | Create/update/close GitHub issues | Closing ANY issue | [.agents/issue-manager/CLAUDE.md](.agents/issue-manager/CLAUDE.md) |
+| **Review Coordinator** | Review docs/code/scripts for compliance | Before committing to CLAUDE.md or scripts/ | [.agents/review-coordinator/CLAUDE.md](.agents/review-coordinator/CLAUDE.md) |
+| **Design** | Create feature specifications | Complex features (>1 week) | [.agents/design/CLAUDE.md](.agents/design/CLAUDE.md) |
+| **Coding** | Implement features per spec | Multi-component features | [.agents/coding/CLAUDE.md](.agents/coding/CLAUDE.md) |
+| **Testing** | Run tests, report failures | Before PR, recommended | [.agents/testing/CLAUDE.md](.agents/testing/CLAUDE.md) |
+
+### Folder Structure
+
+```
+.agents/
+├── README.md                    # Agent system overview
+├── workspace/                   # Shared temporary files (gitignored)
+├── outputs/                     # Shared outputs (committed)
+├── issue-manager/
+│   └── CLAUDE.md                # Issue Manager instructions
+├── review-coordinator/
+│   └── CLAUDE.md                # Review Coordinator instructions
+├── design/
+│   └── CLAUDE.md                # Design Agent instructions
+├── coding/
+│   └── CLAUDE.md                # Coding Agent instructions
+└── testing/
+    └── CLAUDE.md                # Testing Agent instructions
+```
+
+### How to Activate Agents
+
+**Method 1: Explicit invocation**
+```
+User: "Act as Issue Manager - close issue #23"
+User: "Switch to Review Coordinator - review CLAUDE.md changes"
+User: "As Design Agent, create spec for PDF upload"
+```
+
+**Method 2: Automatic detection**
+- User mentions "close issue" → Issue Manager activates
+- File in scripts/ changed → Review Coordinator activates
+- User says "create spec" → Design Agent activates
+
+### Mandatory Agent Usage
+
+**You MUST use these agents for**:
+
+1. **Closing ANY GitHub issue** → Issue Manager
+   - Ensures verification comment
+   - Ensures CHANGELOG updated
+   - Ensures proper closure documentation
+
+2. **Modifying CLAUDE.md** → Review Coordinator
+   - Checks for contradictions
+   - Verifies formatting
+   - Ensures rules are actionable
+
+3. **Modifying scripts/** → Review Coordinator
+   - Verifies subfolder + README structure
+   - Checks script header compliance
+   - Ensures category README updated
+
+4. **Implementing complex features** → Design Agent first
+   - Creates specification
+   - Defines API contracts
+   - Specifies testing strategy
+
+### Agent Communication
+
+**Agents communicate via**:
+1. **GitHub Issues** - Issue Manager creates, others work on them
+2. **Workspace files** - `.agents/workspace/<agent>/` for handoffs
+3. **Output files** - `.agents/outputs/<agent>/` for final deliverables
+
+**Example workflow**:
+```
+Review Coordinator finds problem
+  → Requests issue via Issue Manager
+  → Issue Manager creates issue #45
+  → Design Agent creates spec (if needed)
+  → Coding Agent implements
+  → Testing Agent verifies
+  → Issue Manager closes with verification
+```
+
+**See**: [.agents/README.md](.agents/README.md) for complete agent system documentation
 
 ---
 
 ## [Design Role] - When Designing Features
+
+**Note**: For detailed Design Agent instructions, see [.agents/design/CLAUDE.md](.agents/design/CLAUDE.md)
 
 ### Responsibilities
 - Create feature specifications
@@ -105,7 +345,7 @@ git commit -m "feat(extraction): Implement PDF extraction for NAMUR standards
 - Research existing patterns in vendor/glossary-app/
 
 ### Workspace
-- **Working files**: `.agent/workspace/design/`
+- **Working files**: `.agents/workspace/design/`
 - **Final specs**: `docs/architecture/`
 - **Decisions**: `docs/adr/`
 
@@ -117,7 +357,7 @@ git commit -m "feat(extraction): Implement PDF extraction for NAMUR standards
    - Read relevant ADRs in `docs/adr/`
 
 2. **Draft Phase**
-   - Create spec draft in `.agent/workspace/design/`
+   - Create spec draft in `.agents/workspace/design/`
    - Include:
      - Feature overview and acceptance criteria
      - Database schema with constraints/indexes
@@ -154,7 +394,7 @@ cd vendor/glossary-app/
 ls src/backend/services/  # See what's available
 
 # 2. Draft spec
-cd .agent/workspace/design/
+cd .agents/workspace/design/
 vim feature-001-pdf-upload-spec.md
 # Write comprehensive specification
 
@@ -181,6 +421,8 @@ git commit -m "docs: Add PDF upload specification
 
 ## [Coding Role] - When Implementing Features
 
+**Note**: For detailed Coding Agent instructions, see [.agents/coding/CLAUDE.md](.agents/coding/CLAUDE.md)
+
 ### Responsibilities
 - Implement features per specification
 - Write tests (target: 80%+ coverage)
@@ -189,7 +431,7 @@ git commit -m "docs: Add PDF upload specification
 - Ensure all tests pass before handoff
 
 ### Workspace
-- **Working files**: `.agent/workspace/coding/`
+- **Working files**: `.agents/workspace/coding/`
 - **Final code**: `src/`
 - **Tests**: `tests/`
 
@@ -510,9 +752,9 @@ gh pr merge --squash
 - Either approve or create detailed fix list
 
 ### Workspace
-- **Working files**: `.agent/workspace/review/`
-- **Review reports**: `.agent/outputs/review/`
-- **Fix lists**: `.agent/outputs/review/fixes/`
+- **Working files**: `.agents/workspace/review/`
+- **Review reports**: `.agents/outputs/review/`
+- **Fix lists**: `.agents/outputs/review/fixes/`
 
 ### Process
 
@@ -558,7 +800,7 @@ gh pr merge --squash
 
 ### Example Review Report Template
 
-Save to `.agent/outputs/review/feature-001-review.md`:
+Save to `.agents/outputs/review/feature-001-review.md`:
 
 ```markdown
 # Code Review Report: Feature 001 - PDF Upload
@@ -654,7 +896,7 @@ Implementation is mostly solid, but found 1 CRITICAL security issue and 2 MAJOR 
 Each agent works in their own workspace to avoid conflicts:
 
 ```
-.agent/workspace/
+.agents/workspace/
 ├── design/       # Design agent workspace
 ├── coding/       # Coding agent workspace
 └── review/       # Review agent workspace
@@ -674,16 +916,16 @@ Each agent works in their own workspace to avoid conflicts:
 3. Review agent: Pull latest changes, review code, run tests
 
 **Review → Coding (if fixes needed)**:
-1. Review agent: Create fix list in `.agent/outputs/review/fixes/`
+1. Review agent: Create fix list in `.agents/outputs/review/fixes/`
 2. Review agent: Update GitHub Issue: "Needs Fixes - see review report"
 3. Coding agent: Read fix list, apply fixes, re-submit
 
 ### Conflict Prevention
 
 **File Ownership Rules**:
-- Design agent: OWNS `docs/architecture/`, `docs/adr/`, `.agent/workspace/design/`
-- Coding agent: OWNS `src/`, `tests/`, `.agent/workspace/coding/`
-- Review agent: OWNS `.agent/workspace/review/`, `.agent/outputs/review/`
+- Design agent: OWNS `docs/architecture/`, `docs/adr/`, `.agents/workspace/design/`
+- Coding agent: OWNS `src/`, `tests/`, `.agents/workspace/coding/`
+- Review agent: OWNS `.agents/workspace/review/`, `.agents/outputs/review/`
 - All agents: CAN READ everything, but respect ownership for writes
 
 **Progress Communication**:
@@ -694,6 +936,177 @@ Each agent works in their own workspace to avoid conflicts:
 ---
 
 ## Common Tasks
+
+### GitHub Workflow - Projects & Issue Tracking
+
+**ETEx uses GitHub Projects v2 for 6-week MVP sprint tracking.**
+
+#### Project Structure
+
+- **Project Board**: "ETEx MVP - 6 Week Sprint" (Kanban + Roadmap views)
+- **Iterations**: 6 sprints × 1 week (Week 1, Week 2, ..., Week 6)
+- **Milestone**: "v1.0 MVP" for overall completion tracking
+- **Labels**: 22 labels (9 essential + 13 agent-specific)
+
+#### Board Columns
+
+Simple 3-column Kanban:
+- **To Do** - Ready for work, not started
+- **In Progress** - Actively being worked on
+- **Done** - Completed and closed
+
+#### Views
+
+- **Board View**: Daily Kanban (filtered to current sprint)
+- **Table View**: Full issue list for sprint planning and filtering
+- **Roadmap View**: Timeline showing 6-week overview with sprint markers
+
+#### Issue Lifecycle
+
+**Standard workflow**:
+
+1. **Create**: Issue created → assigned to Week N → status "To Do"
+   ```bash
+   gh issue create --title "feat(backend): PDF upload API" \
+     --label "type:feature,priority:high,component:backend" \
+     --milestone "Week 2" \
+     --body "See docs/architecture/feature-pdf-upload-spec.md"
+   ```
+
+2. **Start**: Agent starts work → move to "In Progress"
+   ```bash
+   # Update Project board manually or via automation
+   # Begin implementation
+   git commit -m "feat(backend): Start PDF upload implementation
+   Relates to #15"
+   ```
+
+3. **Complete**: Create PR with "Closes #N" in description
+   ```bash
+   gh pr create --title "feat(backend): PDF upload API" \
+     --body "Implements PDF upload with validation
+
+   Closes #15"
+   ```
+
+4. **Merge**: PR merges → issue auto-closes → moves to "Done"
+
+5. **Verify**: Add summary comment with verification checklist
+   ```bash
+   gh issue comment 15 --body "✅ Closed via PR #42
+
+   **Verification**:
+   - ✅ All tests pass (coverage: 85%)
+   - ✅ CHANGELOG.md updated
+   - ✅ Manual testing successful
+
+   Issue fully resolved."
+   ```
+
+#### Issue Closing Requirements (MANDATORY)
+
+**Before closing any issue, ensure**:
+
+- ✅ **Summary comment** explaining what was done
+- ✅ **Link to PR** that implemented the fix
+- ✅ **All tests passing** (run test suite)
+- ✅ **CHANGELOG.md updated** (if user-facing change)
+- ✅ **Documentation updated** (if API/feature change)
+
+**Auto-close (preferred)**:
+```bash
+# In PR description or commit message:
+Closes #15
+Fixes #23
+
+# When PR merges → issues auto-close
+```
+
+**Manual close scenarios**:
+- Duplicate issue → `gh issue close 15 --reason "duplicate"` + link to original
+- Won't fix/out of scope → `gh issue close 15 --reason "not planned"` + explanation
+- Resolved without PR → `gh issue close 15 --reason "completed"` + summary
+
+#### Issue Rules
+
+- ✅ Issues represent **1-2 weeks max** work (split larger issues)
+- ✅ Issues shouldn't stay open > 1-2 months (review stale issues)
+- ✅ Use `Relates to #N` in commits during work
+- ✅ Use `Closes #N` or `Fixes #N` in PR for auto-close
+- ✅ Always add verification comment when closing
+
+#### Project Board Usage
+
+**Daily**:
+- Check "In Progress" column
+- Move completed items to "Done"
+- Update issue comments with progress
+
+**Weekly**:
+- Review milestone progress: `gh issue list --milestone "Week 2"`
+- Check Timeline view for workload balance
+- Create issues for next week
+- Review and close stale issues
+
+**Sprint Planning** (start of each week):
+- Move issues from "To Do" to "In Progress" for current sprint
+- Assign issues to agents
+- Verify all issues have proper labels and milestones
+
+#### Example: Complete Issue Lifecycle
+
+```bash
+# Week 2, Monday - Create issue
+gh issue create \
+  --title "feat(backend): PDF upload API" \
+  --label "type:feature,priority:high,component:backend,phase:mvp" \
+  --milestone "Week 2" \
+  --body "Implement /api/documents/upload per spec"
+# Issue #15 created → "To Do" column
+
+# Week 2, Tuesday - Start work
+# Move #15 to "In Progress" on Project board
+git commit -m "feat(backend): Add PDF upload endpoint skeleton
+Relates to #15"
+
+# Week 2, Wednesday - Complete implementation
+git commit -m "feat(backend): Complete PDF upload with validation
+- File type validation (PDF only)
+- 10MB size limit
+- Tests: 85% coverage
+Relates to #15"
+
+# Week 2, Thursday - Create PR
+gh pr create --title "feat(backend): PDF upload API" \
+  --body "Implements PDF upload with validation
+
+**Changes**:
+- /api/documents/upload endpoint
+- File validation (type, size)
+- Error handling
+- Tests: 85% coverage
+
+Closes #15"
+
+# Week 2, Friday - PR merged
+gh pr merge 42 --squash
+# Issue #15 auto-closes → "Done" column
+
+# Add verification comment
+gh issue comment 15 --body "✅ Closed via PR #42
+
+**Verification**:
+- ✅ Tests pass (coverage: 85%)
+- ✅ CHANGELOG.md updated
+- ✅ Tested with 5MB PDF: Success
+- ✅ Tested with 15MB PDF: Rejected correctly
+
+Issue fully resolved."
+```
+
+**See**: [docs/reference/github-project-setup.md](docs/reference/github-project-setup.md) for detailed setup guide
+
+---
 
 ### Reusing Glossary APP Code
 
@@ -900,7 +1313,7 @@ A:
 A:
 - **Coding agent**: Don't guess! Ask Design agent to clarify/update spec
 - **Don't implement based on assumptions**
-- Post question in `.agent/workspace/coding/questions.md` if multi-agent mode
+- Post question in `.agents/workspace/coding/questions.md` if multi-agent mode
 
 **Q: How do I sync vendor/glossary-app/ with latest changes?**
 A:

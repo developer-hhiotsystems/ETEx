@@ -18,10 +18,12 @@
 
 ## Available Scripts
 
-| Script | Description | Usage |
-|--------|-------------|-------|
-| `create-agent-labels.ps1` | Create 13 agent-specific labels | `.\create-agent-labels.ps1` |
-| `create-github-labels.ps1` | Create all 29 labels (full set) | `.\create-github-labels.ps1` |
+**Each script has its own subfolder with dedicated README.md** for detailed usage instructions.
+
+| Script | Description | Location |
+|--------|-------------|----------|
+| **create-agent-labels** | Create 13 agent-specific labels (agent roles, finding types, severity) | [create-agent-labels/](create-agent-labels/) |
+| **create-github-labels** | Create full set of 29 labels (type, priority, phase, component, status) | [create-github-labels/](create-github-labels/) |
 
 ---
 
@@ -32,19 +34,18 @@
 **Create essential labels** (do this once):
 
 ```powershell
-# Navigate to scripts directory
-cd scripts\dev\github
+# Navigate to create-agent-labels directory
+cd scripts\dev\github\create-agent-labels
 
-# Test with dry run
-.\create-agent-labels.ps1 -DryRun
-
-# Create labels for real
+# Create labels
 .\create-agent-labels.ps1
 ```
 
 **Verify**:
 - Go to: https://github.com/developer-hhiotsystems/ETEx/labels
 - Should see 13 new agent labels
+
+**For detailed usage**: See [create-agent-labels/README.md](create-agent-labels/README.md)
 
 ---
 

@@ -1,0 +1,45 @@
+Title: feat(docs): Add "Check Before Creating Folders" mandatory rule to Global Rules
+
+Labels: type:feature, priority:critical, component:documentation, phase:mvp, agent:review
+
+Milestone: Week 1
+
+Body:
+## Problem
+
+No documented requirement for agents to check for existing similar structures before creating new folders/files. This led to `.agents/` being created when checking should have happened first.
+
+## Missing Rule
+
+Agents need explicit instructions on:
+1. What commands to run BEFORE creating folders (search for similar patterns)
+2. When to consolidate vs create new
+3. When to ask user vs decide autonomously
+4. How to handle typo-prone names (.agent vs .agents, doc vs docs)
+
+## Recommended Addition
+
+Add new subsection to "Global Rules" section (after line 74) titled "Before Creating Files/Folders - MANDATORY"
+
+Full rule text provided in review report section "CRITICAL Issue #3" with:
+- Check procedure (search commands)
+- Decision tree (found similar / not found / ambiguous)
+- Examples (3 scenarios)
+- Enforcement policy
+
+## Impact
+
+**Severity**: CRITICAL - Prevents duplicate folders, maintains clean project structure, reduces confusion
+
+## Success Criteria
+
+- [ ] New subsection added to CLAUDE.md Global Rules
+- [ ] Search commands documented
+- [ ] Decision tree clear (when to ask vs decide)
+- [ ] Examples cover common scenarios
+- [ ] Enforcement policy specified
+
+---
+
+Found by: Review Coordinator Agent  
+Review Report: .agents/outputs/reviews/2025-10-31-documentation-review.md
