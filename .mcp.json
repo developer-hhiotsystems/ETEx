@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json.schemastore.org/mcp.json",
+  "mcpServers": {
+    "github": {
+      "command": "claude",
+      "args": ["mcp", "use", "github"],
+      "env": {
+        "GITHUB_TOKEN": "${GITHUB_TOKEN}"
+      },
+      "description": "GitHub integration - CRITICAL (8/8 agents rated HIGH/CRITICAL). Enables issue management, PR operations, milestone tracking. Get token from https://github.com/settings/tokens with scopes: repo, workflow, write:packages, read:org"
+    },
+    "sequential-thinking": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-sequential-thinking"],
+      "description": "Structured problem-solving - CRITICAL (8/8 agents rated HIGH/CRITICAL). Enables step-by-step analysis for complex decisions. No API key required."
+    },
+    "context7": {
+      "command": "claude",
+      "args": ["mcp", "use", "context7"],
+      "env": {
+        "CONTEXT7_API_KEY": "${CONTEXT7_API_KEY}"
+      },
+      "description": "Latest library documentation - HIGH (6/8 agents rated HIGH). Provides current FastAPI, SQLAlchemy, React, MUI docs. Get free API key from https://context7.com (100 requests/day)."
+    },
+    "playwright": {
+      "command": "npx",
+      "args": ["@playwright/mcp@latest"],
+      "description": "E2E testing automation - HIGH (5/8 agents rated CRITICAL for specialized testing). Install Week 5-6 for frontend testing phase. No API key required."
+    },
+    "duckduckgo": {
+      "command": "node",
+      "args": ["${MCP_SERVERS_PATH}/servers/src/duckduckgo/index.js"],
+      "description": "Web search for error solutions - OPTIONAL (3/8 agents rated MEDIUM). Requires cloning https://github.com/modelcontextprotocol/servers. No API key required."
+    }
+  },
+  "metadata": {
+    "version": "1.0.0",
+    "projectName": "ETEx",
+    "description": "MCP server configuration based on agent consultation. All 8 agents consulted: 8/8 approved GitHub+Sequential Thinking, 6/8 approved Context7, 5/8 approved Playwright, 3/8 approved DuckDuckGo.",
+    "consultationDate": "2025-11-01",
+    "installationPriority": {
+      "week0": ["github", "sequential-thinking", "context7"],
+      "week5-6": ["playwright"],
+      "optional": ["duckduckgo"]
+    }
+  }
+}
