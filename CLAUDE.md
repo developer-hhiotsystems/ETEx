@@ -211,6 +211,7 @@ git commit -m "docs: Add PDF upload specification
    - Run all tests (unit + integration)
    - Check test coverage (target: 80%+)
    - Manual testing of critical paths
+   - **If bugs/issues found**: Create GitHub Issue immediately (see Bug Tracking section below)
    - Fix any issues
 
 4. **Finalize Phase**
@@ -295,6 +296,137 @@ git commit -m "feat(extraction): Implement document processor
 - All tests passing
 - Ready for review"
 ```
+
+---
+
+## Bug Tracking & GitHub Issues
+
+### When to Create a GitHub Issue
+
+**MANDATORY** - Create a GitHub Issue when:
+1. **Bug discovered during testing** - Any bug found during development or review
+2. **Bug discovered during implementation** - Unexpected behavior, crashes, errors
+3. **Security vulnerability found** - Input validation missing, XSS, SQL injection, etc.
+4. **Performance issue detected** - Slow queries, memory leaks, response time > 500ms
+5. **Test failures** - Tests failing that previously passed (regression)
+6. **Edge case discovered** - Unhandled scenario found during manual testing
+7. **Third-party integration issue** - API errors, vendor code bugs, dependency issues
+
+**Do NOT create issue for**:
+- Typos in code comments (just fix inline)
+- Minor code style issues caught by linter (just fix inline)
+- Simple refactoring opportunities (unless blocking, then create issue)
+
+### How to Create Bug Issues
+
+**Use the bug report template**:
+
+```bash
+gh issue create --template bug_report.yml \
+  --title "bug(component): Brief description" \
+  --label "type: bug,priority: high,component: backend"
+```
+
+**Or via web**: https://github.com/developer-hhiotsystems/ETEx/issues/new?template=bug_report.yml
+
+**Required Information**:
+- **Component**: Where did bug occur? (backend, frontend, database, extraction)
+- **Impact**: Critical (blocks MVP), High (core functionality), Medium (workaround), Low (edge case)
+- **Steps to reproduce**: Exact steps to trigger bug
+- **Expected vs Actual behavior**: What should happen vs what actually happens
+- **Error log**: Stack trace, error messages, console output
+- **Environment**: Python version, OS, browser (if frontend)
+
+### Bug Workflow
+
+**1. Discover Bug** → **2. Create Issue** → **3. Fix** → **4. Close Issue**
+
+**Example Workflow**:
+
+```bash
+# Step 1: Discover bug during testing
+# Upload PDF → crashes with IndexError
+
+# Step 2: Create GitHub Issue
+gh issue create \
+  --title "bug(extraction): PDF parser crashes on scanned documents" \
+  --label "type: bug,priority: high,component: extraction" \
+  --body "Steps to reproduce:
+1. Upload scanned NAMUR PDF
+2. Click Extract Terms
+3. Crashes with IndexError
+
+Expected: Show error message 'Scanned PDFs not supported'
+Actual: Crashes with IndexError: list index out of range
+
+Error log: [paste error]
+Environment: Python 3.12, Windows 11"
+
+# GitHub creates Issue #23
+
+# Step 3: Fix the bug
+git checkout -b fix/scanned-pdf-handling
+# ... implement fix ...
+git commit -m "fix(extraction): Handle scanned PDFs gracefully
+
+- Added is_scanned_pdf() detection
+- Return 400 error with friendly message
+- Added unit test for scanned PDF handling
+
+Fixes #23"
+
+# Step 4: Issue automatically closed when PR merged
+gh pr create --title "fix(extraction): Handle scanned PDFs (Fixes #23)"
+gh pr merge --squash
+# Issue #23 auto-closed
+```
+
+### Bug Priority Guidelines
+
+**Priority: Critical** (Must fix immediately)
+- Blocks MVP milestone
+- Security vulnerability
+- Data loss
+- Complete feature breakdown
+- System crash
+
+**Priority: High** (Fix this week)
+- Core functionality broken
+- Affects multiple users
+- No workaround available
+- Blocks other development
+
+**Priority: Medium** (Fix this sprint)
+- Non-critical feature broken
+- Workaround exists
+- Affects edge cases
+- Performance degradation
+
+**Priority: Low** (Fix when convenient)
+- Cosmetic issues
+- Rare edge cases
+- Minor inconvenience
+- Enhancement ideas
+
+### Issue Labels for Bugs
+
+**Required labels** (3):
+1. **Type**: `type: bug`
+2. **Priority**: `priority: critical`, `priority: high`, `priority: medium`, or `priority: low`
+3. **Component**: `component: backend`, `component: frontend`, `component: database`, `component: extraction`, or `component: api-integration`
+
+**Optional labels**:
+- `phase: mvp` - If blocks MVP
+- `status: blocked` - If waiting on external dependency
+- `status: in-progress` - If actively being fixed
+
+### Bug Documentation
+
+**After fixing, document in**:
+1. **Git commit message**: Reference issue number (`Fixes #23`)
+2. **CHANGELOG.md**: Add to "Fixed" section
+3. **Tests**: Add regression test to prevent recurrence
+4. **Code comments**: If tricky fix, explain why bug occurred
 
 ---
 
