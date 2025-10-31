@@ -430,6 +430,76 @@ gh pr merge --squash
 
 ---
 
+## Agent-Generated Issues
+
+### When Agents Should Create Issues
+
+**Design Agent** creates issues when:
+- Spec has ambiguity or missing requirements (`type: design-issue`)
+- User decision needed (`type: clarification`)
+- Found conflicting requirements
+- Discovered dependency on external API/service
+
+**Coding Agent** creates issues when:
+- Blocked by missing dependency (`type: blocked`)
+- Spec is unclear or contradictory (`type: clarification`)
+- Discovered bug during implementation (`type: bug`)
+- Found edge case not covered in spec (`type: design-issue`)
+
+**Review Agent** creates issues when:
+- Found security vulnerability (`severity: critical`)
+- Found code quality issues (`severity: major` or `severity: minor`)
+- Suggests improvement (`severity: suggestion`)
+- Tests are insufficient (`type: bug`)
+
+**Explore Agent** creates issues when:
+- Has question about codebase (`type: question`)
+- Found interesting pattern to note (`type: observation`)
+- Discovered potential improvement (`severity: suggestion`)
+
+### Agent Issue Labels
+
+**Required labels for agent issues** (minimum 3):
+1. **Agent label**: `agent: design`, `agent: coding`, `agent: review`, or `agent: explore`
+2. **Type label**: `type: bug`, `type: clarification`, `type: design-issue`, `type: blocked`, etc.
+3. **Priority label**: `priority: critical`, `priority: high`, `priority: medium`, or `priority: low`
+
+**Optional labels**:
+- **Component**: `component: backend`, `component: frontend`, etc.
+- **Severity** (review findings only): `severity: critical`, `severity: major`, `severity: minor`, `severity: suggestion`
+- **Phase**: `phase: mvp` if blocks MVP
+
+### Agent Issue Title Convention
+
+```
+<type>(<component>): <brief description> [agent-generated]
+```
+
+**Examples**:
+- `clarification: IATE API authentication method unclear [agent-generated]`
+- `bug(backend): SQL injection in search endpoint [agent-generated]`
+- `blocked: spaCy German model not in requirements [agent-generated]`
+- `observation: Better error handling pattern in vendor/ [agent-generated]`
+
+### Agent Issue Best Practices
+
+**DO**:
+- ✅ Create issue immediately when finding blocking issue
+- ✅ Provide clear context (file, line, what task you were doing)
+- ✅ Suggest fix if you know the solution
+- ✅ Use appropriate severity/priority labels
+- ✅ Add `[agent-generated]` to title for tracking
+- ✅ Report issue to user with actionable next steps
+
+**DON'T**:
+- ❌ Create issue for minor code style (just fix inline)
+- ❌ Create duplicate issues (search first)
+- ❌ Create issue without context or reproduction steps
+- ❌ Forget to label with agent role
+- ❌ Create issue without priority/severity
+
+---
+
 ## [Review Role] - When Reviewing Code
 
 ### Responsibilities
