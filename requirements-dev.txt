@@ -1,0 +1,28 @@
+# ETEx - Development Dependencies
+# Install with: pip install -r requirements-dev.txt
+
+# Include production dependencies
+-r requirements.txt
+
+# ============================================
+# Additional Development Tools
+# ============================================
+
+# Debugging
+ipdb==0.13.13  # IPython debugger
+pdb++==0.10.3  # Enhanced pdb
+
+# Documentation
+mkdocs==1.5.3  # Documentation generator
+mkdocs-material==9.5.5  # Material theme
+pdoc==14.3.0  # API documentation
+
+# Database tools
+alembic-utils==0.8.2  # Alembic helpers
+
+# Performance profiling
+py-spy==0.3.14  # Sampling profiler
+memory-profiler==0.61.0  # Memory usage
+
+# Pre-commit hooks
+pre-commit==3.6.0

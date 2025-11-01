@@ -1,0 +1,84 @@
+# ETEx - Python Backend Dependencies
+# Python 3.12+ required
+
+# ============================================
+# Web Framework
+# ============================================
+fastapi==0.109.0
+uvicorn[standard]==0.27.0
+python-multipart==0.0.6  # File uploads
+
+# ============================================
+# Database & ORM
+# ============================================
+sqlalchemy==2.0.25
+alembic==1.13.1
+aiosqlite==0.19.0  # Async SQLite support
+
+# ============================================
+# Data Validation & Serialization
+# ============================================
+pydantic==2.5.3
+pydantic-settings==2.1.0
+email-validator==2.1.0
+
+# ============================================
+# Authentication & Security
+# ============================================
+python-jose[cryptography]==3.3.0  # JWT tokens
+passlib[bcrypt]==1.7.4  # Password hashing
+python-dotenv==1.0.0  # Environment variables
+
+# ============================================
+# HTTP Clients & External APIs
+# ============================================
+httpx==0.26.0  # Async HTTP client
+aiohttp==3.9.1  # Alternative async HTTP
+
+# ============================================
+# PDF Processing
+# ============================================
+pypdf==4.0.1  # PDF text extraction
+pdfplumber==0.10.4  # Advanced PDF parsing
+
+# ============================================
+# NLP & Term Extraction
+# ============================================
+spacy==3.7.2  # NLP library
+# Download models after install: python -m spacy download de_core_news_sm
+# python -m spacy download en_core_web_sm
+
+# ============================================
+# Data Processing
+# ============================================
+pandas==2.2.0  # Data manipulation
+openpyxl==3.1.2  # Excel file support
+
+# ============================================
+# Testing
+# ============================================
+pytest==7.4.4
+pytest-asyncio==0.23.3
+pytest-cov==4.1.0
+pytest-mock==3.12.0
+httpx==0.26.0  # Already listed above, used for testing
+
+# ============================================
+# Code Quality
+# ============================================
+black==24.1.1  # Code formatter
+ruff==0.1.14  # Linter
+mypy==1.8.0  # Type checker
+
+# ============================================
+# Development Tools
+# ============================================
+watchfiles==0.21.0  # File watcher for hot reload
+rich==13.7.0  # Beautiful console output
+ipython==8.20.0  # Better REPL
+
+# ============================================
+# Utilities
+# ============================================
+python-slugify==8.0.1  # URL-safe strings
+pyyaml==6.0.1  # YAML parsing
