@@ -240,6 +240,175 @@ scripts/dev/github/
 
 ---
 
+## CRITICAL: Pre-Task Agent Check (MANDATORY)
+
+**BEFORE starting ANY task, you MUST perform this 4-step check:**
+
+### Step 1: Identify Task Type
+
+Ask yourself these questions:
+
+**Is this a backend task?**
+- Python/FastAPI development
+- Database models (SQLAlchemy)
+- API endpoints
+- Business logic
+→ **Use Backend Expert**
+
+**Is this a frontend task?**
+- React components
+- TypeScript interfaces
+- MUI/Material-UI components
+- State management (Redux/Context)
+→ **Use Frontend Expert**
+
+**Is this creating a specification?**
+- Feature design
+- Architecture diagrams
+- Database schema design
+- API contract definition
+→ **Use Design Agent**
+
+**Is this implementing from a spec?**
+- Coding features per existing spec
+- Multi-component implementation
+- Integration work
+→ **Use Coding Agent**
+
+**Is this reviewing work?**
+- Code review
+- Documentation review
+- Script compliance check
+- Security audit
+→ **Use Review Coordinator**
+
+**Is this managing issues?**
+- Creating GitHub issues
+- Closing GitHub issues
+- Updating issue status
+- Issue triage
+→ **Use Issue Manager**
+
+**Is this running tests?**
+- Test execution
+- Coverage analysis
+- Test failure investigation
+→ **Use Testing Agent**
+
+**Is this project management?**
+- Sprint planning
+- Milestone tracking
+- Velocity analysis
+→ **Use Project Manager**
+
+### Step 2: If User Request is Ambiguous
+
+**ALWAYS ask the user which agent to use when request is unclear.**
+
+❌ **BAD** (Don't do this):
+```
+User: "Continue with development"
+Claude: [Starts coding directly without knowing which agent to use]
+```
+
+❌ **BAD** (Don't do this):
+```
+User: "Go on with App Development Plan"
+Claude: [Looks at next issue and starts implementing without asking]
+```
+
+✅ **GOOD** (Do this):
+```
+User: "Continue with development"
+Claude: "I see the next task is Issue #4 (Create database schema).
+
+This is a backend development task. According to CLAUDE.md, backend
+development requires the Backend Expert agent for Python/FastAPI/SQLAlchemy
+best practices.
+
+Should I activate the Backend Expert agent to implement the database models?"
+```
+
+✅ **GOOD** (Do this):
+```
+User: "Go on with App Development Plan"
+Claude: "Looking at the App Development Plan, the next task is Issue #4
+(Database schema implementation).
+
+Before proceeding, I need to clarify which agent to use:
+A) Backend Expert - To implement SQLAlchemy models
+B) Design Agent - To review/enhance the database spec first
+
+According to CLAUDE.md mandatory rules, backend development should use
+Backend Expert. Shall I activate that agent now?"
+```
+
+### Step 3: Check Mandatory Agent Requirements
+
+**These tasks REQUIRE specific agents (NO EXCEPTIONS):**
+
+| Task | Required Agent | Why Mandatory |
+|------|----------------|---------------|
+| Close ANY issue | Issue Manager | Ensures verification comment, CHANGELOG update, proper workflow |
+| Modify CLAUDE.md | Review Coordinator | Prevents contradictions, ensures consistency, quality control |
+| Modify scripts/ | Review Coordinator | Ensures folder structure, README compliance, category updates |
+| Backend development | Backend Expert | Python/FastAPI/SQLAlchemy best practices, async patterns |
+| Frontend development | Frontend Expert | React/TypeScript/MUI architecture, state management |
+| Create feature specs | Design Agent | Ensures implementation-ready specs with API contracts |
+| Code review | Review Coordinator | Quality, security, spec compliance, test coverage |
+| Test execution | Testing Agent | Proper test setup, coverage analysis, failure reporting |
+
+**Violation Consequences**:
+- ❌ Implementing backend code without Backend Expert → Likely missing best practices
+- ❌ Closing issue without Issue Manager → Missing verification, CHANGELOG not updated
+- ❌ Modifying CLAUDE.md without Review Coordinator → Risk of contradictions, broken rules
+
+### Step 4: If No Agent Matches
+
+**For trivial tasks**, you can proceed directly:
+- Updating simple README content
+- Creating .gitkeep files
+- Fixing typos in comments
+- Simple git operations (pull, status)
+
+**But if in doubt, ALWAYS ASK THE USER.**
+
+---
+
+## Enforcement Checklist
+
+**At the start of EVERY task, complete this checklist:**
+
+- [ ] **Did I identify the task type?** (backend, frontend, design, review, etc.)
+- [ ] **Did I check if it requires a mandatory agent?** (See Step 3 table)
+- [ ] **If ambiguous, did I ask the user which agent to use?**
+- [ ] **Am I using the correct agent for this task?**
+- [ ] **If trivial task, did I confirm it doesn't need an agent?**
+
+**If ANY checkbox is NO → STOP and ask the user.**
+
+### Quick Decision Tree
+
+```
+New task arrives
+    ↓
+Is it trivial (typo fix, .gitkeep)?
+    YES → Proceed directly
+    NO → Continue
+         ↓
+Is task type clear (backend/frontend/review/etc)?
+    YES → Check mandatory agent table (Step 3)
+    NO → ASK USER which agent to use
+         ↓
+Is there a mandatory agent for this task?
+    YES → Activate that agent
+    NO → Proceed with general capabilities
+         ↓
+Confirm with user if still unsure
+```
+
+---
+
 ## Permanent Agent System
 
 **ETEx uses specialized permanent agents for consistent workflows.**
@@ -1133,5 +1302,5 @@ A: **NO**. vendor/ is read-only reference. If you need modifications:
 ---
 
 **End of CLAUDE.md**
-**Last Updated**: 2025-10-31
-**Version**: 1.0
+**Last Updated**: 2025-11-01
+**Version**: 1.1 (Added CRITICAL: Pre-Task Agent Check section)
