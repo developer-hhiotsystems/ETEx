@@ -202,4 +202,62 @@ Going forward, **ALWAYS** check CLAUDE.md agent requirements before starting any
 
 ---
 
+### 4. Close Issue #4 (Database Schema with SQLAlchemy Models) - NEW!
+
+**URL**: https://github.com/developer-hhiotsystems/ETEx/issues/4
+
+**Actions**:
+1. Go to Issue #4 on GitHub web UI
+2. Add this verification comment:
+
+```markdown
+## ✅ Issue #4 Verification - Database Schema with SQLAlchemy Models
+
+**Status**: Complete (used Backend Expert agent ✅)
+
+### Models Created (5 total)
+- ✅ AuthoritativeSource (12 fields) - Tier-based source management
+- ✅ Term (14 fields) - Multi-language terminology with metadata
+- ✅ TermSynonym (bidirectional) - Synonym relationships
+- ✅ Translation - Cross-language mappings with validation
+- ✅ UploadedDocument - Document metadata and processing status
+
+### Technical Details
+- SQLAlchemy 2.0 syntax (Mapped, mapped_column)
+- 20+ indexes for performance
+- 25+ constraints (FK, CHECK, UNIQUE)
+- CASCADE/SET NULL for referential integrity
+
+### Verification
+Alembic migration: 6b66d218ecce (applied successfully)
+Database file: data/database/etex.db (128KB)
+
+### Code Reuse
+Tier 2: Adapted from vendor/glossary-app/src/backend/base_models.py
+
+### Commit Reference
+Closed via commit 920c26e
+
+🤖 Verified by Backend Expert Agent
+```
+
+3. Click "Close issue"
+4. Select close reason: "Completed"
+
+---
+
+## Updated Project Status
+
+**Week 1 Progress**: 43% (3/7 issues)
+
+| Issue | Status | Agent Used | Notes |
+|-------|--------|------------|-------|
+| #8 | ✅ Complete | None (fixed) | Awaiting manual close |
+| #5 | ✅ Complete | None (fixed) | Awaiting manual close |
+| #4 | ✅ Complete | Backend Expert ✅ | Awaiting manual close |
+| #11 | 🔄 Created | Issue Manager ✅ | Token permission issue |
+| #6 | ⏳ Next | Frontend Expert (planned) | React setup |
+
+---
+
 **End of Manual Actions Document**
