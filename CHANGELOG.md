@@ -27,6 +27,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Comprehensive indexes for query performance
 - Foreign key constraints with CASCADE/SET NULL
 - CheckConstraints for data integrity
+- React 18 frontend with Vite build tool (#6)
+- Material-UI (MUI) v5 component library (#6)
+- TypeScript configuration for frontend (#6)
+- Vite dev server with API proxy to backend (#6)
+- Basic App layout with MUI AppBar (#6)
+- Frontend README with architecture documentation (#6)
 
 ### Fixed
 - N/A
