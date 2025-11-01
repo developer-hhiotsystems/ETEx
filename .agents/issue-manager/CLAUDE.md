@@ -22,6 +22,103 @@
 
 ---
 
+## GitHub MCP Integration
+
+**CRITICAL**: This agent relies heavily on GitHub MCP for streamlined issue management.
+
+### What is GitHub MCP?
+
+GitHub MCP (Model Context Protocol) provides direct GitHub API integration within Claude Code. Instead of using `gh` CLI commands, you can use MCP tools for faster, more reliable operations.
+
+### Benefits for Issue Manager
+
+✅ **Faster operations**: Direct API calls (no shell overhead)
+✅ **Better error handling**: Structured responses from GitHub API
+✅ **Rich data access**: Get issue details, PR status, project boards in one call
+✅ **Real-time verification**: Check issue status, test results, PR merges instantly
+
+### Available MCP Tools
+
+**Issue Operations**:
+- `mcp__github__create_issue` - Create issues with labels, milestones
+- `mcp__github__update_issue` - Update title, body, labels, state
+- `mcp__github__add_comment` - Add verification/progress comments
+- `mcp__github__list_issues` - Search/filter issues by label, milestone, state
+- `mcp__github__get_issue` - Get full issue details for verification
+
+**PR Operations**:
+- `mcp__github__list_pull_requests` - Find PRs that close issues
+- `mcp__github__get_pull_request` - Verify PR merge status
+- `mcp__github__get_commit_status` - Check if tests passed
+
+**Project Board**:
+- `mcp__github__list_projects` - Get project board info
+- `mcp__github__update_project_item` - Move issues between columns
+
+### Workflow Comparison
+
+**Old way (gh CLI)**:
+```bash
+gh issue create --title "..." --label "..." --milestone "..." --body "..."
+gh issue comment 15 --body "..."
+gh issue close 15
+```
+
+**New way (GitHub MCP)**:
+```
+Use mcp__github__create_issue with:
+- title: "feat(backend): PDF upload API"
+- labels: ["type:feature", "priority:high", "phase:mvp"]
+- milestone: "Week 2"
+- body: "Implementation details..."
+
+Use mcp__github__add_comment with issue #15
+Use mcp__github__update_issue to close #15
+```
+
+### Verification Made Easy
+
+**Example: Verify issue can be closed**
+
+```
+# Check if PR merged
+mcp__github__get_pull_request(pr_number=42)
+→ Returns: state="merged", merged_at="2025-10-31T10:15:00Z"
+
+# Check test status on PR
+mcp__github__get_commit_status(ref="main")
+→ Returns: All checks passed
+
+# Get issue details
+mcp__github__get_issue(issue_number=15)
+→ Returns: Full issue data including linked PRs
+
+# Add verification comment
+mcp__github__add_comment(
+  issue_number=15,
+  body="✅ Verified: PR #42 merged, tests passing..."
+)
+
+# Close issue
+mcp__github__update_issue(issue_number=15, state="closed")
+```
+
+### Best Practices with MCP
+
+1. **Always use MCP tools first** - Fall back to `gh` CLI only if MCP unavailable
+2. **Batch operations** - Get all issue data in one MCP call (faster than multiple CLI calls)
+3. **Error handling** - MCP returns structured errors (easier to parse than CLI output)
+4. **Rich queries** - Use MCP filters instead of grepping CLI output
+
+### Fallback Strategy
+
+If GitHub MCP is unavailable:
+- Use `gh` CLI commands as documented in original sections
+- Log warning: "GitHub MCP not available, using gh CLI fallback"
+- Consider requesting MCP installation via user
+
+---
+
 ## Responsibilities
 
 ### 1. Creating Issues
@@ -318,6 +415,29 @@ After creating an issue for implementation:
 
 ### Scenario 1: Review Coordinator Found Bug
 
+**Using GitHub MCP (preferred)**:
+```
+# 1. Read review report (using Read tool)
+Read .agents/outputs/reviews/scripts-review.md
+
+# 2. Create issue via MCP
+mcp__github__create_issue:
+  title: "bug(scripts): Missing README in create-labels subfolder"
+  labels: ["type:bug", "priority:high", "agent:review", "severity:major"]
+  milestone: "Week 1"
+  body: "Review Coordinator found missing README.md in scripts/dev/github/create-labels/
+
+  **Problem**: Violates scripts organization rule (each script needs README)
+  **Fix**: Add README.md with usage instructions
+  **See**: .agents/outputs/reviews/scripts-review.md"
+
+→ Returns: Issue #N created
+
+# 3. Log operation
+Write to .agents/outputs/issues/2025-10-31-log.md
+```
+
+**Using gh CLI (fallback)**:
 ```bash
 # 1. Read review report
 cat .agents/outputs/reviews/scripts-review.md
@@ -351,6 +471,45 @@ gh issue create \
 
 ### Scenario 3: User Requests Issue Closure
 
+**Using GitHub MCP (preferred)**:
+```
+# 1. Get issue details and linked PRs
+mcp__github__get_issue(issue_number=15)
+→ Returns: linked_prs=[#42], state="open"
+
+# 2. Verify PR is merged
+mcp__github__get_pull_request(pr_number=42)
+→ Returns: state="merged", merged_at="2025-10-31T10:15:00Z"
+
+# 3. Check test status on PR
+mcp__github__get_commit_status(ref="main")
+→ Returns: All checks passed
+
+# 4. Check CHANGELOG (using Read tool)
+Read CHANGELOG.md (search for #15)
+
+# 5. Add verification comment
+mcp__github__add_comment:
+  issue_number: 15
+  body: "✅ Closed via PR #42
+
+  **Verification**:
+  - ✅ PR merged at 2025-10-31T10:15:00Z
+  - ✅ All tests pass (coverage: 85%)
+  - ✅ CHANGELOG.md updated
+
+  Issue fully resolved."
+
+# 6. Close issue (if not auto-closed)
+mcp__github__update_issue:
+  issue_number: 15
+  state: "closed"
+
+# 7. Log closure
+Write to .agents/outputs/issues/2025-10-31-log.md
+```
+
+**Using gh CLI (fallback)**:
 ```bash
 # 1. Verify work is done
 gh pr list --search "Fixes #15" --state merged

@@ -3,7 +3,8 @@
 **Role**: React/TypeScript/Material-UI Architecture & Best Practices
 **Workspace**: `.agents/workspace/frontend-expert/`
 **Outputs**: Component designs, code reviews, architecture recommendations
-**Last Updated**: 2025-10-31
+**MCP Servers**: Context7 (docs), Sequential Thinking (design), Playwright (testing), DuckDuckGo (search), GitHub (issues)
+**Last Updated**: 2025-11-01
 
 ---
 
@@ -536,6 +537,232 @@ export const TermSearch = () => {
 
 ---
 
+## MCP Server Integration
+
+**ETEx uses Model Context Protocol (MCP) servers to enhance frontend development workflows.**
+
+### Available MCP Servers for Frontend Work
+
+#### 1. Context7 MCP - Latest Documentation ⭐ CRITICAL
+
+**Purpose**: Access current React 18, TypeScript 5, Material-UI v5, and frontend library documentation
+
+**When to use**:
+- Checking latest React hooks patterns
+- Material-UI v5 component API reference
+- TypeScript utility types and patterns
+- React Router v6 navigation patterns
+- React Query/TanStack Query patterns
+
+**Usage Examples**:
+
+```
+"Use Context7 to show latest Material-UI DataGrid sorting API"
+"Get React 18 useTransition hook example from Context7"
+"Show TypeScript Record utility type usage from Context7"
+"Find Material-UI sx prop responsive breakpoint syntax"
+```
+
+**Best Practices**:
+- Always check Context7 before using deprecated patterns
+- Verify MUI component props (v5 differs from v4)
+- Check for React 18 concurrent features
+- Get TypeScript 5.x utility type examples
+
+#### 2. Sequential Thinking MCP - Complex Design ⭐ RECOMMENDED
+
+**Purpose**: Break down complex state management and component architecture problems
+
+**When to use**:
+- Designing global state architecture
+- Planning data flow for complex features
+- Component hierarchy planning
+- Performance optimization strategy
+
+**Usage Examples**:
+
+```
+"Use sequential thinking to design state management for multi-step form"
+"Break down component architecture for PDF upload with progress tracking"
+"Plan data flow for real-time search with debouncing and caching"
+"Design error boundary strategy for entire application"
+```
+
+**Workflow Pattern**:
+```
+1. Problem: How to manage state for synonym mapping UI?
+2. Sequential thinking breaks down:
+   - What state is needed? (selected terms, synonyms, validation)
+   - Where should state live? (Context vs component local)
+   - What are side effects? (API calls, optimistic updates)
+   - How to handle errors? (error boundaries, retry logic)
+3. Output: Clear state architecture with type definitions
+```
+
+#### 3. Playwright MCP - E2E Testing ⭐ RECOMMENDED
+
+**Purpose**: Browser automation for end-to-end testing of React components
+
+**When to use**:
+- Testing user flows (search → select → edit)
+- Validating responsive design across viewports
+- Testing form submissions
+- Checking accessibility (ARIA attributes, keyboard navigation)
+
+**Usage Examples**:
+
+```
+"Test term search flow: type query, verify results, click term, check detail view"
+"Validate mobile responsive layout for term list on 375px viewport"
+"Test form validation: submit empty form, verify error messages appear"
+"Check keyboard navigation through term list using Tab and Enter"
+```
+
+**Best Practices**:
+- Test critical user paths (search, create, edit workflows)
+- Validate error states (network failures, validation errors)
+- Check loading states (spinners appear/disappear correctly)
+- Test across viewport sizes (mobile, tablet, desktop)
+
+#### 4. DuckDuckGo MCP - Troubleshooting
+
+**Purpose**: Search for React/TypeScript error solutions and examples
+
+**When to use**:
+- Debugging TypeScript errors
+- Finding React error solutions
+- Looking for Material-UI examples
+- Researching best practices
+
+**Usage Examples**:
+
+```
+"Search for 'React useEffect infinite loop solutions'"
+"Find 'Material-UI DataGrid custom cell renderer examples'"
+"Search 'TypeScript generic hook pattern examples'"
+"Find 'React Query cache invalidation strategies'"
+```
+
+#### 5. GitHub MCP - Issue Tracking
+
+**Purpose**: Create frontend-specific issues during development
+
+**Usage Examples**:
+
+```
+"Create issue: UI bug - term list not updating after create"
+"List open frontend issues with label 'component: frontend'"
+"Add comment to issue #45 with performance optimization results"
+```
+
+### MCP Workflow Examples
+
+#### Example 1: Designing Complex Component
+
+**Task**: Design state management for multi-step PDF upload wizard
+
+```
+Step 1: Use Sequential Thinking
+"Use sequential thinking to design state for PDF upload wizard with:
+- Step 1: File selection
+- Step 2: Metadata entry
+- Step 3: Preview
+- Step 4: Confirmation"
+
+Sequential Thinking Output:
+- State needed: currentStep, uploadedFile, metadata, validationErrors
+- State location: Local component state (wizard specific)
+- Side effects: File upload API call, validation
+- Error handling: Per-step validation, rollback on API error
+
+Step 2: Use Context7 for Implementation Patterns
+"Use Context7 to show React 18 useReducer pattern for wizard state"
+
+Context7 Output:
+- Modern useReducer with TypeScript
+- Action types for step transitions
+- State machine pattern for wizard
+
+Step 3: Implement with MUI Components
+"Use Context7 to find Material-UI Stepper component API"
+
+Result: Type-safe, well-architected wizard component
+```
+
+#### Example 2: Performance Optimization
+
+**Task**: Optimize term list rendering (1000+ items)
+
+```
+Step 1: Use Sequential Thinking
+"Use sequential thinking to optimize rendering 1000+ term items"
+
+Output:
+1. Identify bottleneck: All items rendering at once
+2. Solution options: Virtualization vs Pagination
+3. Decision: Virtualization (better UX for search)
+4. Implementation: react-window library
+
+Step 2: Use Context7 for Current Best Practices
+"Use Context7 to show react-window FixedSizeList with TypeScript"
+
+Step 3: Use Playwright to Verify
+"Test virtualized list: scroll to bottom, verify smooth scrolling"
+
+Result: List renders 1000+ items with <50ms interaction time
+```
+
+#### Example 3: Debugging TypeScript Error
+
+**Task**: Fix TypeScript error in generic hook
+
+```
+Error: "Type 'unknown' is not assignable to type 'T'"
+
+Step 1: Use Context7
+"Use Context7 to show TypeScript generic constraint patterns"
+
+Step 2: If not found, use DuckDuckGo
+"Search for 'TypeScript generic hook unknown type error solution'"
+
+Step 3: Apply fix with proper type guards
+Result: Type-safe generic hook with proper constraints
+```
+
+### MCP Usage Guidelines
+
+**DO**:
+- ✅ Use Context7 for ANY library API questions (avoid outdated patterns)
+- ✅ Use Sequential Thinking for state architecture decisions
+- ✅ Use Playwright for critical user flow testing
+- ✅ Use DuckDuckGo when Context7 doesn't have specific example
+- ✅ Create GitHub issues for UI bugs discovered during testing
+
+**DON'T**:
+- ❌ Guess API syntax - always verify with Context7
+- ❌ Skip Sequential Thinking for complex state design
+- ❌ Skip E2E tests for critical workflows
+- ❌ Use outdated patterns (check Context7 first)
+
+### MCP Performance Tips
+
+**Context7**:
+- Be specific: "Material-UI DataGrid v5 sorting API" not just "DataGrid"
+- Include version: "React 18 useTransition" not just "useTransition"
+- Ask for examples: "Show example with TypeScript types"
+
+**Sequential Thinking**:
+- Frame clearly: "Design state for [feature] with [requirements]"
+- List constraints: "Must support [requirement 1], [requirement 2]"
+- Ask for trade-offs: "Compare Context API vs Zustand for this use case"
+
+**Playwright**:
+- Test user flows, not implementation details
+- Use semantic selectors (aria-label, role) not CSS classes
+- Test happy path + error paths
+
+---
+
 ## Success Criteria
 
 **You succeed when**:
@@ -545,6 +772,9 @@ export const TermSearch = () => {
 - ✅ Code is testable (pure functions, separated logic)
 - ✅ Accessibility standards met (WCAG AA)
 - ✅ Responsive design works on mobile/tablet/desktop
+- ✅ Using latest patterns verified via Context7
+- ✅ Complex state architecture planned with Sequential Thinking
+- ✅ Critical user flows tested with Playwright
 
 ---
 

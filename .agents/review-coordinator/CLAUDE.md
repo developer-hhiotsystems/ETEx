@@ -27,6 +27,75 @@
 
 ---
 
+## MCP Server Integration
+
+**Review Coordinator uses these MCP servers**:
+
+### 1. GitHub MCP (Issue Creation)
+
+**Purpose**: Create issues for violations found during review
+
+**When to use**:
+- CRITICAL findings (contradictions, security issues, broken workflows)
+- MAJOR findings (missing documentation, incomplete compliance)
+- Systematic issue tracking for all review findings
+
+**Example usage**:
+```
+"Create GitHub issue with title 'bug(CLAUDE.md): Contradictory scripts organization examples'
+and labels type:bug,priority:critical,agent:review,severity:critical"
+```
+
+### 2. Sequential Thinking MCP (Systematic Review)
+
+**Purpose**: Structured analysis of complex documentation or code
+
+**When to use**:
+- Reviewing large CLAUDE.md changes (multiple sections)
+- Analyzing scripts/ folder structure compliance
+- Complex security audits
+- Multi-file consistency checks
+
+**Example usage**:
+```
+"Use sequential thinking to review CLAUDE.md changes for contradictions:
+1. Identify all changed sections
+2. Cross-reference with existing rules
+3. Check examples match stated rules
+4. Verify no ambiguity in instructions
+5. Assess integration with existing structure"
+```
+
+### 3. Context7 MCP (Best Practices Verification)
+
+**Purpose**: Verify code uses current best practices
+
+**When to use**:
+- Reviewing FastAPI code (ensure latest patterns)
+- Checking React/TypeScript components (MUI v5, React 18)
+- SQLAlchemy validation (async patterns, 2.0 syntax)
+
+**Example usage**:
+```
+"Use context7 to verify this FastAPI endpoint follows current best practices"
+```
+
+### 4. DuckDuckGo MCP (Research Solutions)
+
+**Purpose**: Find solutions for violations or better patterns
+
+**When to use**:
+- Researching better documentation structure
+- Finding security best practices
+- Discovering industry-standard review checklists
+
+**Example usage**:
+```
+"Search for 'security review checklist for Python FastAPI applications'"
+```
+
+---
+
 ## Responsibilities
 
 ### 1. Documentation Review
@@ -234,8 +303,27 @@ Reviewed:
 
 ### Step 5: Create Issues for Findings
 
-**For CRITICAL and MAJOR findings**, create GitHub issues via Issue Manager:
+**For CRITICAL and MAJOR findings**, create GitHub issues using GitHub MCP:
 
+**Using GitHub MCP** (preferred):
+```
+"Create GitHub issue:
+- Title: bug(CLAUDE.md): Contradictory scripts organization examples
+- Labels: type:bug,priority:critical,agent:review,severity:critical
+- Body: Review Coordinator found contradiction in CLAUDE.md section 'Scripts Organization'.
+
+Section 1 says: 'Each script MUST be in own subfolder'
+Section 2 example shows: scripts/dev/create-labels.ps1 (not in subfolder)
+
+This violates the mandatory rule and confuses agents.
+
+Recommendation: Fix example to show correct structure.
+
+See: .agents/outputs/reviews/2025-10-31-claude-md-review.md
+"
+```
+
+**Fallback method** (if GitHub MCP unavailable):
 ```bash
 # Hand off to Issue Manager
 echo "Create issue for Review Coordinator finding:
@@ -246,8 +334,6 @@ Body: Review Coordinator found contradiction in CLAUDE.md...
 
 See: .agents/outputs/reviews/2025-10-31-claude-md-review.md
 " > .agents/workspace/issue-manager/create-issue-request.txt
-
-# Or if user is present, report findings directly
 ```
 
 ### Step 6: Report to User
@@ -352,13 +438,46 @@ Before creating ANY new folder or file structure:
 
 ## Common Review Scenarios
 
-### Scenario 1: CLAUDE.md Modified
+### Scenario 1: CLAUDE.md Modified (with MCP)
 
+**Complete workflow using MCP servers**:
+
+```
+Step 1: Identify changes
+"Show git diff for CLAUDE.md"
+
+Step 2: Systematic review using Sequential Thinking MCP
+"Use sequential thinking to review CLAUDE.md changes:
+1. List all sections modified
+2. Check each section for internal contradictions
+3. Cross-reference with other CLAUDE.md sections
+4. Verify all examples match stated rules
+5. Check for ambiguous instructions
+6. Assess integration with existing structure
+7. Identify CRITICAL/MAJOR/MINOR issues"
+
+Step 3: Create review report
+# Document findings in .agents/outputs/reviews/2025-11-01-claude-md-review.md
+
+Step 4: Create issues for CRITICAL/MAJOR findings using GitHub MCP
+"Create GitHub issue:
+- Title: bug(CLAUDE.md): Section X contradicts Section Y
+- Labels: type:bug,priority:critical,agent:review,severity:critical
+- Body: [detailed description from review report]
+"
+
+Step 5: Report to user
+"Review complete. Found 2 CRITICAL, 1 MAJOR issues.
+Full report: .agents/outputs/reviews/2025-11-01-claude-md-review.md
+Issues created: #47, #48"
+```
+
+**Fallback (without MCP)**:
 ```bash
 # 1. Check what changed
 git diff CLAUDE.md
 
-# 2. Review changed sections
+# 2. Review changed sections manually
 # - Check for contradictions
 # - Verify examples match rules
 # - Check formatting
@@ -388,8 +507,41 @@ grep "new-script" scripts/dev/github/README.md
 # 5. Create review report with findings
 ```
 
-### Scenario 3: Major Feature PR
+### Scenario 3: Major Feature PR (with MCP)
 
+**Complete workflow using MCP servers**:
+
+```
+Step 1: Verify spec and implementation
+"Check if docs/architecture/feature-name-spec.md exists"
+"Review spec requirements vs implemented code"
+
+Step 2: Check code attribution
+"Search for 'Adapted from' in src/ to verify vendor attribution"
+
+Step 3: Verify best practices using Context7 MCP
+"Use context7 to verify this FastAPI endpoint follows current best practices:
+[paste code snippet]"
+
+"Use context7 to check if this SQLAlchemy async query uses 2.0 syntax:
+[paste code snippet]"
+
+Step 4: Security review
+"Search for hardcoded credentials in src/"
+"Check for SQL injection vulnerabilities in database queries"
+"Verify input validation on all API endpoints"
+
+Step 5: Run tests
+"Execute: pytest tests/ --cov"
+
+Step 6: Create comprehensive review report
+# Document in .agents/outputs/reviews/2025-11-01-feature-name-review.md
+
+Step 7: Create issues for findings using GitHub MCP
+"Create GitHub issue for each CRITICAL/MAJOR finding"
+```
+
+**Fallback (without MCP)**:
 ```bash
 # 1. Review spec exists
 test -f docs/architecture/feature-name-spec.md || echo "⚠️  No spec found"

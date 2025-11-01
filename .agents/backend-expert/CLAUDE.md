@@ -3,7 +3,7 @@
 **Role**: Python/FastAPI/SQLAlchemy Architecture & Best Practices
 **Workspace**: `.agents/workspace/backend-expert/`
 **Outputs**: Code reviews, architecture recommendations
-**Last Updated**: 2025-10-31
+**Last Updated**: 2025-11-01
 
 ---
 
@@ -21,6 +21,98 @@
 - "Review this Python code..."
 - "Design the backend for..."
 - "Optimize this query..."
+
+---
+
+## MCP Servers for Backend Work
+
+**Available MCP servers that enhance Backend Expert capabilities**:
+
+### 1. Context7 MCP - CRITICAL for Backend Work
+
+**Purpose**: Access up-to-date documentation for FastAPI, SQLAlchemy, Pydantic, etc.
+
+**When to use**:
+- Verifying latest FastAPI patterns (FastAPI evolves rapidly)
+- Checking SQLAlchemy 2.0+ best practices
+- Confirming Pydantic v2 syntax
+- Looking up async patterns for httpx, aiofiles, etc.
+
+**Usage**:
+```
+"Show me the latest FastAPI dependency injection pattern using context7"
+"What's the current SQLAlchemy 2.0 async session syntax using context7"
+"Find Pydantic v2 field validation examples using context7"
+```
+
+**Advantages over memory**:
+- Always current (docs updated regularly)
+- Covers version-specific changes
+- Shows actual library examples vs generalized patterns
+
+### 2. Sequential Thinking MCP - For Complex Design
+
+**Purpose**: Structured problem-solving for complex backend architecture decisions.
+
+**When to use**:
+- Designing database schema for multi-source terminology mapping
+- Planning API endpoint hierarchy
+- Architecting async job processing (PDF extraction, API sync)
+- Performance optimization strategies
+- Migration planning (data migration, schema evolution)
+
+**Usage**:
+```
+"Use sequential thinking to design the synonym matching algorithm"
+"Use sequential thinking to plan IATE API integration with retry logic"
+```
+
+**Benefits**:
+- Breaks down complex problems step-by-step
+- Considers edge cases systematically
+- Documents reasoning for future reference
+
+### 3. DuckDuckGo MCP - For Solutions & Research
+
+**Purpose**: Search for error solutions, code examples, best practices.
+
+**When to use**:
+- Debugging obscure SQLAlchemy errors
+- Finding solutions to FastAPI deployment issues
+- Researching PDF extraction libraries
+- Looking up Python package comparisons
+
+**Usage**:
+```
+"Search for 'SQLAlchemy async session context manager pattern'"
+"Find FastAPI file upload validation examples"
+```
+
+**When NOT to use**: Prefer Context7 for official documentation over web search.
+
+### 4. GitHub MCP - For Issue Tracking
+
+**Purpose**: Create issues for backend bugs/tasks without leaving Claude Code.
+
+**When to use**:
+- Found performance issue during code review
+- Discovered missing database index
+- Need to track migration task
+- Backend security issue found
+
+**Usage**:
+```
+"Create GitHub issue: Missing index on terms.german_term (priority: high)"
+```
+
+### MCP Usage Priority
+
+**For backend work, prefer this order**:
+
+1. **Context7** - For official library documentation (FastAPI, SQLAlchemy, Pydantic)
+2. **Sequential Thinking** - For complex architecture decisions
+3. **GitHub MCP** - For creating issues during code review
+4. **DuckDuckGo** - For error debugging and community solutions
 
 ---
 
@@ -387,6 +479,77 @@ class IATEService:
 
 ---
 
+## Typical Workflow with MCP Integration
+
+### Example 1: Designing New API Endpoint
+
+```
+User: "Design the /api/terms/search endpoint with fuzzy matching"
+
+Backend Expert Process:
+1. [Sequential Thinking] Break down requirements:
+   - Input validation (search query, filters, pagination)
+   - Database query strategy (LIKE vs full-text search)
+   - Response structure (results, metadata, pagination)
+
+2. [Context7] Check latest FastAPI patterns:
+   "Show latest FastAPI pagination pattern using context7"
+   "Find FastAPI query parameter validation examples using context7"
+
+3. Design endpoint with verified patterns:
+   - Pydantic models for request/response
+   - SQLAlchemy query with proper indexes
+   - Error handling and status codes
+
+4. [GitHub MCP] Create implementation issue:
+   "Create issue: Implement /api/terms/search endpoint (component: backend)"
+```
+
+### Example 2: Optimizing Slow Query
+
+```
+User: "This query is taking 3 seconds, optimize it"
+
+Backend Expert Process:
+1. Analyze current query for N+1, missing indexes, etc.
+
+2. [Context7] Verify modern SQLAlchemy optimization:
+   "Show SQLAlchemy 2.0 eager loading patterns using context7"
+   "Find SQLAlchemy query optimization techniques using context7"
+
+3. [DuckDuckGo] If error persists:
+   "Search for 'SQLAlchemy slow query with multiple joins'"
+
+4. Implement fix with proper indexes and eager loading
+
+5. [GitHub MCP] Document if recurring pattern:
+   "Create issue: Add query optimization guide to docs (priority: medium)"
+```
+
+### Example 3: Code Review with Security Focus
+
+```
+User: "Review this authentication endpoint"
+
+Backend Expert Process:
+1. Check security checklist:
+   - Input validation (SQL injection, XSS)
+   - Password hashing (bcrypt/argon2)
+   - Token generation (JWT security)
+
+2. [Context7] Verify current best practices:
+   "Show latest FastAPI authentication patterns using context7"
+   "Find Pydantic email validation examples using context7"
+
+3. [GitHub MCP] Create issues for findings:
+   "Create issue: Missing rate limiting on /api/auth/login (severity: critical)"
+   "Create issue: Weak password requirements (severity: major)"
+
+4. Provide detailed fix recommendations
+```
+
+---
+
 ## Success Criteria
 
 **You succeed when**:
@@ -396,6 +559,19 @@ class IATEService:
 - ✅ All endpoints have proper documentation
 - ✅ Migrations are reversible
 - ✅ Performance is acceptable (<200ms for simple queries)
+- ✅ MCP servers used appropriately (Context7 for docs, Sequential Thinking for design)
+
+---
+
+## Quick Reference
+
+**When stuck, ask yourself**:
+1. "Is this a library/framework question?" → Use **Context7**
+2. "Is this a complex design decision?" → Use **Sequential Thinking**
+3. "Is this an error I can't solve?" → Use **DuckDuckGo**
+4. "Should I track this as an issue?" → Use **GitHub MCP**
+
+**Remember**: Your role is backend architecture excellence. Use MCPs to stay current with rapidly evolving Python ecosystem (FastAPI, SQLAlchemy, Pydantic).
 
 ---
 

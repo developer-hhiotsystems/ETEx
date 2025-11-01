@@ -3,7 +3,7 @@
 **Role**: Test Execution & Quality Assurance
 **Workspace**: `.agents/workspace/testing/`
 **Outputs**: `.agents/outputs/testing/`
-**Last Updated**: 2025-10-31
+**Last Updated**: 2025-11-01
 
 ---
 
@@ -204,6 +204,81 @@ EOF
 
 ---
 
+## MCP Server Integration
+
+### Available MCP Servers for Testing
+
+**1. Playwright MCP** - E2E Browser Testing (Priority 3, Week 5-6)
+- Automate browser testing for frontend
+- Capture screenshots on failures
+- Test user workflows end-to-end
+- Usage: `mcp__playwright__browser_*` tools
+
+**2. GitHub MCP** - Automated Issue Reporting (Priority 1)
+- Create issues for test failures automatically
+- Update milestone progress
+- Track test metrics
+- Usage: Direct GitHub issue creation instead of Issue Manager handoff
+
+**3. Sequential Thinking MCP** - Test Strategy Planning
+- Plan complex test scenarios
+- Design test coverage strategy
+- Debug difficult test failures
+- Usage: Add "use sequential thinking" for complex test planning
+
+**4. Context7 MCP** - Latest Testing Patterns
+- Current pytest patterns and best practices
+- React Testing Library updates
+- FastAPI TestClient examples
+- Usage: "Show pytest async patterns using context7"
+
+### MCP Workflow Examples
+
+**Example 1: E2E Test with Playwright MCP**
+```bash
+# Navigate to app
+mcp__playwright__browser_navigate(url="http://localhost:3000")
+
+# Take snapshot
+mcp__playwright__browser_snapshot()
+
+# Click upload button
+mcp__playwright__browser_click(element="Upload PDF button", ref="...")
+
+# Verify result
+mcp__playwright__browser_snapshot()
+
+# If failure, screenshot
+mcp__playwright__browser_take_screenshot(filename="e2e-upload-failure.png")
+```
+
+**Example 2: Auto-Report Failure with GitHub MCP**
+```bash
+# Test fails
+pytest tests/unit/backend/test_pdf_parser.py::test_scanned_pdf
+
+# Instead of handoff to Issue Manager, create issue directly:
+gh issue create --title "bug(extraction): test_scanned_pdf fails" \
+  --label "type:bug,priority:high,component:extraction,agent:testing" \
+  --body "Test: test_scanned_pdf
+Error: AssertionError: Expected text, got None
+Analysis: OCR not implemented for scanned PDFs
+See: .agents/outputs/testing/2025-11-01-test-report.md"
+```
+
+**Example 3: Plan Test Strategy with Sequential Thinking**
+```
+User: "Design test strategy for multi-language search"
+Testing Agent: [Uses sequential-thinking MCP]
+- Step 1: Identify search edge cases (German umlauts, special chars)
+- Step 2: Plan unit tests (term normalization, search algorithm)
+- Step 3: Plan integration tests (database queries, API responses)
+- Step 4: Plan E2E tests (UI search workflow)
+- Step 5: Define coverage targets per module
+```
+
+---
+
 ## Automated Testing (Future)
 
 **Setup weekly test runs**:
@@ -220,14 +295,14 @@ EOF
 
 ### Reporting Failures to Issue Manager
 
-**Format**: `.agents/workspace/issue-manager/create-issue-request.txt`
+**With GitHub MCP (Preferred)**:
+- Create issues directly using `gh issue create`
+- Faster than handoff to Issue Manager
+- Immediate issue creation with labels/milestones
 
-**Include**:
-- Clear title with test name
-- Error message and stack trace
-- Analysis of why it failed
-- Suggested fix
-- Link to test report
+**Without GitHub MCP (Fallback)**:
+- Use Issue Manager handoff: `.agents/workspace/issue-manager/create-issue-request.txt`
+- Include: title, error, analysis, fix suggestion, report link
 
 ### Reporting to User
 
