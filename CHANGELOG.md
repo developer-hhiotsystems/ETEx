@@ -35,7 +35,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Frontend README with architecture documentation (#6)
 
 ### Fixed
-- N/A
+- GitHub token now has full permissions for issue management (#11)
+  - Token scopes updated: repo, workflow, project, read:org, write:packages
+  - Issue comment capability verified
+  - GitHub Admin Plugin tested and documented
 
 ### Changed
 - N/A
@@ -58,7 +61,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Agent system documentation in .agents/
 
 ### Known Issues
-- GitHub token lacks permissions for full issue management (#11)
 - spaCy language models installation fails on Windows (DLL dependency issue) - non-blocking for Week 1
 
 ---
