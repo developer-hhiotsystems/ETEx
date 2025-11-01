@@ -15,18 +15,16 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from dotenv import load_dotenv
 load_dotenv()
 
-# Import our database Base
-from database import Base
+# Import our database Base and DATABASE_URL
+from database import Base, DATABASE_URL
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config
 
-# Set sqlalchemy.url from environment variable
-config.set_main_option(
-    "sqlalchemy.url",
-    os.getenv("DATABASE_URL", "sqlite:///../../data/database/etex.db")
-)
+# Set sqlalchemy.url from database.py configuration
+# This ensures consistency between app and migrations
+config.set_main_option("sqlalchemy.url", DATABASE_URL)
 
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.

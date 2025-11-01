@@ -17,6 +17,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Environment variable template (.env.example) (#8)
 - Data directories for database, uploads, and cache (#8)
 - Complete SETUP.md documentation (#8)
+- Database schema with 5 core SQLAlchemy 2.0 models (#4):
+  - AuthoritativeSource (tier-based source management)
+  - Term (multi-language terminology with metadata)
+  - TermSynonym (bidirectional synonym relationships)
+  - Translation (cross-language mappings with validation)
+  - UploadedDocument (document metadata and processing status)
+- Alembic migration for initial schema (6b66d218ecce)
+- Comprehensive indexes for query performance
+- Foreign key constraints with CASCADE/SET NULL
+- CheckConstraints for data integrity
 
 ### Fixed
 - N/A
